@@ -15,6 +15,8 @@ To use the script pass in a filename string referring to an image in the same fo
 
 # Import libraries
 import sys
+import os
+import urllib.request
 from sys import argv
 import numpy as np
 from PIL import Image
@@ -26,6 +28,18 @@ from keras.preprocessing import image
 THRESH = 0.01 # This sets the minimum softmaxed prob for a class to be accepted as true
 TRUE_CLASSES = [468,436, 479,475,654,656,705,734,751,779,817,829,511,575] # Class to text mapping is from https://gist.github.com/yrevar/942d3a0ac09ec9e5eb3a
 TOP_N = 10 # This sets how many of the top predictions to search for true classes
+MODELS_DIRECTORY = '.keras/models'
+VGG19_WEIGHTS_PATH = '.keras/models/vgg19_weights_tf_dim_ordering_tf_kernels.h5'
+VGG19_WEIGHTS_URL = 'https://github.com/fchollet/deep-learning-models/releases/download/v0.1/vgg19_weights_tf_dim_ordering_tf_kernels.h5'
+
+
+if not os.path.exists(MODELS_DIRECTORY):
+    os.makedirs(MODELS_DIRECTORY)
+
+# Download VGG19 weights if not present
+if not os.path.isfile(VGG19_WEIGHTS_PATH):
+	print("Downloading and saving VGG19 weights.  This may take a few mins (file is > 100 MB)")
+	urllib.request.urlretrieve (VGG19_WEIGHTS_URL, VGG19_WEIGHTS_PATH)
 
 # Try and load image
 try:
